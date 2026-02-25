@@ -15,7 +15,7 @@
 
 </script-->
 <script setup lang="ts">
-const { data: contents } = await useFetch('https://api.are.na/v3/channels/interface-flpda1x2qq8/contents')
+const { data: contents } = await useFetch('https://api.are.na/v3/channels/images-fuceyrhk0yc/contents')
 </script>
 <script lang="ts">
   export default {
