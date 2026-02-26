@@ -1,54 +1,20 @@
-<!--script>
-  const getJSON = async url => {
-    const response = await fetch(url);
-    if(!response.ok) // check if response worked (no 404 errors etc...)
-      throw new Error(response.statusText);
-
-    const data = response.json(); // get JSON from the response
-    return data; // returns a promise, which resolves to this data value
-  }
-  let data = getJSON("https://api.are.na/v3/channels/interface-flpda1x2qq8/contents").then(data => {
-  //console.log(data);
-}).catch(error => {
-  console.error(error);
-});
-
-</script-->
 <script setup lang="ts">
-const { data: contents } = await useFetch('https://api.are.na/v3/channels/images-fuceyrhk0yc/contents')
+  const postsQuery = groq`*[
+    _type == "post"
+    && defined(slug.current)
+  ]|order(publishedAt desc)[0...12]{_id, title, slug, publishedAt}`
+  const { data: posts } = await useSanityQuery<PostsQueryResult>(postsQuery)
 </script>
-<script lang="ts">
-  export default {
-  name: 'Hello',
-  data() {
-    let posts = []
-    /*for (var i = contents.data.length - 1; i >= 0; i--) {
-      contents.data[i]
-    }*/
-    return {
-      posts
-    }
-  },
-}
-</script>
-
-
 <template>
-  <div>
-    <h1>Website</h1>
-    <p>The newest website.</p>
-    <NuxtLink to="/blog/hello-world">
-      <p>Go to blog post</p>
-    </NuxtLink>
-    <!--img :src='contents.data[8].image.src'-->
-    <h2>types</h2>
-    <div v-for='post in contents.data'>
-      {{post.type}}
-      <img v-if="post.type ==='Image'"
-      :src='post.image.src'>
-    </div>
-    
-  </div>
+  <main class="container mx-auto min-h-screen max-w-3xl p-8">
+    <h1 class="text-4xl font-bold mb-8">Posts</h1>
+    <ul class="flex flex-col gap-y-4">
+      <li v-for="post in posts" :key="post._id" class="hover:underline">
+        <nuxt-link :to="`/${post.slug.current}`">
+          <h2 class="text-xl font-semibold">{{ post.title }}</h2>
+          <p>{{ new Date(post.publishedAt).toLocaleDateString() }}</p>
+        </nuxt-link>
+      </li>
+    </ul>
+  </main>
 </template>
-
-

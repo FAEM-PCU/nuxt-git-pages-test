@@ -10,8 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/sanity": "^2.2.0",
+    "@sanity/image-url": "^2.0.3",
     "nuxt": "^4.1.2",
-    "vue": "^3.5.21",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
